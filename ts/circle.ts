@@ -26,7 +26,7 @@ class Circle {
         this.upCount = 0;
     }
     
-    makeSprite = () => {
+    makeSprite  () {
         this.bmd = this.game.add.bitmapData(this.radius*2, this.radius*2);
         this.bmd.circle(this.radius, this.radius, this.radius, colors[this.colorIndex]);
         
@@ -37,14 +37,14 @@ class Circle {
         this.sprite.events.onInputDown.add(this.clicked, this);
     }
     
-    clicked = () => {
+    clicked () {
         this.touched = true;
         this.upCount = 0;
         this.colorIndex = (this.colorIndex + 1) % colors.length;
         this.update();
     }
     
-    update = () => {
+    update () {
         if(this.touched){
             this.upCount++;
             if(this.upCount > (gameSettings.tChange * 1000)/gameSettings.tColorUpdate){
@@ -67,11 +67,11 @@ class Circle {
         }
     }
     
-    remove = () =>{
+    remove () {
         this.sprite.destroy();
     }
     
-    toRadians = (deg : number) => {
+    toRadians (deg : number) {
         return deg * Math.PI / 180;
     }
 }

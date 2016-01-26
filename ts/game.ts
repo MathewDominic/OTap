@@ -22,6 +22,8 @@ class Game{
         this.newWidth = gameSettings.gWidht;
         this.newHeight = gameSettings.hHeight;
         
+        //update num rows
+        
         this.game = new Phaser.Game(this.newWidth,this.newHeight,Phaser.AUTO,'', {create : this.create});
     }
     

@@ -9,41 +9,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var GameState = (function (_super) {
     __extends(GameState, _super);
     function GameState() {
-        var _this = this;
         _super.call(this);
-        this.updateSprites = function () {
-            for (var i = 0; i < _this.numOfCircles; ++i) {
-                _this.circles[i].update();
-            }
-        };
-        this.distanceBetween = function (objA, objB) {
-            var dx = objA.sprite.body.x - objB.sprite.body.x;
-            var dy = objA.sprite.body.y - objB.sprite.body.y;
-            var dist = Math.sqrt(dx * dx + dy * dy);
-            return dist;
-        };
-        this.accelerateToObject = function (objA, objB, speed) {
-            if (typeof speed === 'undefined') {
-                speed = 20;
-            }
-            var angle = Math.atan2(objB.sprite.y - objA.sprite.y, objB.sprite.x - objA.sprite.x);
-            //objA.sprite.body.rotation = angle + this.game.math.degToRad(180); 
-            objA.sprite.body.force.x = Math.cos(angle) * speed;
-            objA.sprite.body.force.y = Math.sin(angle) * speed;
-        };
-        this.getMaxObjWidth = function () {
-            //as the number of objects increases the size should be changed accordingly
-            var totalArea = _this.newWidth * (_this.newHeight - 0.1 * _this.newHeight);
-            var areaObj = totalArea / gameSettings.maxObjs;
-            var maxWidth = Math.floor(Math.sqrt(areaObj));
-            return maxWidth;
-        };
-        this.clearCircles = function () {
-            for (var i = 0; i < _this.numOfCircles; ++i) {
-                _this.circles[i].remove();
-            }
-            _this.circles.length = 0;
-        };
         var targetWidth = 480; // the width of the game we want
         var targetHeight = 720;
         var deviceRatio = (window.innerWidth / window.innerHeight);
@@ -101,6 +67,39 @@ var GameState = (function (_super) {
             allSame = false;
             this.initGame();
         }
+    };
+    GameState.prototype.updateSprites = function () {
+        for (var i = 0; i < this.numOfCircles; ++i) {
+            this.circles[i].update();
+        }
+    };
+    GameState.prototype.distanceBetween = function (objA, objB) {
+        var dx = objA.sprite.body.x - objB.sprite.body.x;
+        var dy = objA.sprite.body.y - objB.sprite.body.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        return dist;
+    };
+    GameState.prototype.accelerateToObject = function (objA, objB, speed) {
+        if (typeof speed === 'undefined') {
+            speed = 20;
+        }
+        var angle = Math.atan2(objB.sprite.y - objA.sprite.y, objB.sprite.x - objA.sprite.x);
+        //objA.sprite.body.rotation = angle + this.game.math.degToRad(180); 
+        objA.sprite.body.force.x = Math.cos(angle) * speed;
+        objA.sprite.body.force.y = Math.sin(angle) * speed;
+    };
+    GameState.prototype.getMaxObjWidth = function () {
+        //as the number of objects increases the size should be changed accordingly
+        var totalArea = this.newWidth * (this.newHeight - 0.1 * this.newHeight);
+        var areaObj = totalArea / gameSettings.maxObjs;
+        var maxWidth = Math.floor(Math.sqrt(areaObj));
+        return maxWidth;
+    };
+    GameState.prototype.clearCircles = function () {
+        for (var i = 0; i < this.numOfCircles; ++i) {
+            this.circles[i].remove();
+        }
+        this.circles.length = 0;
     };
     return GameState;
 })(Phaser.State);
