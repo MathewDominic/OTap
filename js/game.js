@@ -5,16 +5,8 @@
 /// <reference path="GameState.ts" />
 var Game = (function () {
     function Game() {
-        var targetWidth = 480; // the width of the game we want
-        var targetHeight = 720;
-        var deviceRatio = (window.innerWidth / window.innerHeight);
-        var newRatio = (targetHeight / targetWidth) * deviceRatio;
-        this.newWidth = targetWidth * newRatio;
-        this.newHeight = targetHeight;
-        //for dev 
-        this.newWidth = gameSettings.gWidht;
-        this.newHeight = gameSettings.hHeight;
-        this.game = new Phaser.Game(this.newWidth, this.newHeight, Phaser.AUTO, '', { create: this.create });
+        //update num rows
+        this.game = new Phaser.Game(gameSettings.getW(), gameSettings.getH(), Phaser.AUTO, '', { create: this.create });
     }
     Game.prototype.create = function () {
         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;

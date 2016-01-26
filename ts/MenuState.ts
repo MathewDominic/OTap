@@ -6,32 +6,17 @@ class MenuState extends Phaser.State {
     game : Phaser.Game;
     playSprite : Phaser.Sprite;
     radius : number;
-    newWidth : number;
-    newHeight : number;
-    
+   
     constructor(){
-        super();
-        
-        var targetWidth : number = 480; // the width of the game we want
-        var targetHeight : number  = 720;
-        var deviceRatio : number = (window.innerWidth/window.innerHeight);
-        var newRatio : number = (targetHeight/targetWidth)*deviceRatio;
-
-        this.newWidth = targetWidth*newRatio;
-        this.newHeight = targetHeight;
-        
-        //for dev 
-        this.newWidth = gameSettings.gWidht;
-        this.newHeight = gameSettings.hHeight;
-        
-        this.radius = this.newWidth/3;
+        super();  
+        this.radius = gameSettings.getW()/5;
     }
     
     create () {
         var bmd = this.game.add.bitmapData(this.radius*2, this.radius*2);
         bmd.circle(this.radius, this.radius, this.radius, "#EA4335");
         
-        this.playSprite = this.game.add.sprite(this.newWidth/2 - this.radius, this.newHeight/2 - this.radius, bmd);
+        this.playSprite = this.game.add.sprite(gameSettings.getW()/2 - this.radius, gameSettings.getH()/2 - this.radius, bmd);
         //this.sprite.alpha = 0;
         //this.game.add.tween(this.playSprite).to({alpha:1}, 2000,"Linear",true);
         this.playSprite.inputEnabled = true;

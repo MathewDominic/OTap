@@ -5,10 +5,32 @@ var Shape;
     Shape[Shape["Square"] = 1] = "Square";
 })(Shape || (Shape = {}));
 ;
-var gameSettings = {
-    maxObjs: 50,
-    tChange: 5,
-    tColorUpdate: 200,
-    gWidht: 400,
-    hHeight: 600
-};
+var GameSettings = (function () {
+    function GameSettings() {
+        this.maxObjs = 50;
+        this.tChange = 5;
+        this.tColorUpdate = 200;
+        this.gWidht = 400;
+        this.hHeight = 600;
+        this.numRows = 10;
+        this.numCols = 5;
+        var targetWidth = 480; // the width of the game we want
+        var targetHeight = 720;
+        var deviceRatio = (window.innerWidth / window.innerHeight);
+        var newRatio = (targetHeight / targetWidth) * deviceRatio;
+        this.newWidth = targetWidth * newRatio;
+        this.newHeight = targetHeight;
+        //for dev 
+        this.newWidth = this.gWidht;
+        this.newHeight = this.hHeight;
+    }
+    GameSettings.prototype.getW = function () {
+        return this.newWidth;
+    };
+    GameSettings.prototype.getH = function () {
+        return this.newWidth;
+    };
+    return GameSettings;
+})();
+;
+var gameSettings = new GameSettings();

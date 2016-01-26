@@ -6,25 +6,12 @@
 
 class Game{
     game : Phaser.Game;
-    newWidth : number;
-    newHeight : number;
-    
     constructor(){
-        var targetWidth : number = 480; // the width of the game we want
-        var targetHeight : number  = 720;
-        var deviceRatio : number = (window.innerWidth/window.innerHeight);
-        var newRatio : number = (targetHeight/targetWidth)*deviceRatio;
 
-        this.newWidth = targetWidth*newRatio;
-        this.newHeight = targetHeight;
-        
-        //for dev 
-        this.newWidth = gameSettings.gWidht;
-        this.newHeight = gameSettings.hHeight;
         
         //update num rows
         
-        this.game = new Phaser.Game(this.newWidth,this.newHeight,Phaser.AUTO,'', {create : this.create});
+        this.game = new Phaser.Game(gameSettings.getW(),gameSettings.getH(),Phaser.AUTO,'', {create : this.create});
     }
     
     create(){
