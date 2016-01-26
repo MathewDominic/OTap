@@ -3,5 +3,7 @@ enum Shape { Circle, Square};
 var gameSettings = {
     maxObjs : 50,
     tChange : 5,
-    tColorUpdate :200
+    tColorUpdate :200,
+    gWidht : 400,
+    hHeight : 600
 };

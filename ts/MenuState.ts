@@ -20,6 +20,10 @@ class MenuState extends Phaser.State {
         this.newWidth = targetWidth*newRatio;
         this.newHeight = targetHeight;
         
+        //for dev 
+        this.newWidth = gameSettings.gWidht;
+        this.newHeight = gameSettings.hHeight;
+        
         this.radius = this.newWidth/3;
     }
     

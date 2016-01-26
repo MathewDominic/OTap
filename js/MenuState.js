@@ -15,6 +15,9 @@ var MenuState = (function (_super) {
         var newRatio = (targetHeight / targetWidth) * deviceRatio;
         this.newWidth = targetWidth * newRatio;
         this.newHeight = targetHeight;
+        //for dev 
+        this.newWidth = gameSettings.gWidht;
+        this.newHeight = gameSettings.hHeight;
         this.radius = this.newWidth / 3;
     }
     MenuState.prototype.create = function () {

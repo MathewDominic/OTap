@@ -11,6 +11,9 @@ var Game = (function () {
         var newRatio = (targetHeight / targetWidth) * deviceRatio;
         this.newWidth = targetWidth * newRatio;
         this.newHeight = targetHeight;
+        //for dev 
+        this.newWidth = gameSettings.gWidht;
+        this.newHeight = gameSettings.hHeight;
         this.game = new Phaser.Game(this.newWidth, this.newHeight, Phaser.AUTO, '', { create: this.create });
     }
     Game.prototype.create = function () {

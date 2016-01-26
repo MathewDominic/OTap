@@ -21,7 +21,10 @@ class GameState extends Phaser.State {
         this.newWidth = targetWidth*newRatio;
         this.newHeight = targetHeight;
         
-        //this.game = new Phaser.Game(this.newWidth,this.newHeight,Phaser.AUTO,'', {create : this.create, update : this.update});
+        //for dev 
+        this.newWidth = gameSettings.gWidht;
+        this.newHeight = gameSettings.hHeight;
+
         this.numOfCircles = 2;
         this.circles = [];
     }
