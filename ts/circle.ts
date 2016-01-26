@@ -28,12 +28,14 @@ class Circle {
         this.upCount = 0;
         
         this.x = this.j * 2 * radius;
-        this.y = gameSettings.getH() - (this.i * 2 * radius) - 2*this.radius;
+        this.y = gameSettings.getH() - (this.i * 2 * radius) - 2 * this.radius;
     }
     
     makeSprite  () {
         this.bmd = this.game.add.bitmapData(this.radius*2, this.radius*2);
-        this.bmd.circle(this.radius, this.radius, this.radius-2, colors[this.colorIndex]);
+        if(this.colorIndex != -1){
+            this.bmd.circle(this.radius, this.radius, this.radius-2, colors[this.colorIndex]);
+        }
         
         this.sprite = this.game.add.sprite(this.x, this.y, this.bmd);
         //this.sprite.alpha = 0;
@@ -43,6 +45,9 @@ class Circle {
     }
     
     clicked () {
+        if(this.colorIndex == -1){
+            return;
+        }
         this.touched = true;
         this.upCount = 0;
         this.colorIndex = (this.colorIndex + 1) % colors.length;
@@ -50,6 +55,10 @@ class Circle {
     }
     
     update () {
+        if(this.colorIndex == -1){
+            //no need to draw circle, return
+            return;
+        }
         if(this.touched){
             this.upCount++;
             if(this.upCount > (gameSettings.tChange * 1000)/gameSettings.tColorUpdate){
@@ -66,7 +75,7 @@ class Circle {
                 this.bmd.context.arc(this.radius,this.radius,this.radius-2,0,this.toRadians(sectorAngle));
                 this.bmd.context.lineTo(this.radius,this.radius);
                 this.bmd.context.fill();
-                this.bmd.circle(this.radius, this.radius, this.radius -2 - this.radius/10, colors[this.colorIndex]);
+                this.bmd.circle(this.radius, this.radius, this.radius -2 - this.radius/6, colors[this.colorIndex]);
                 this.sprite.loadTexture(this.bmd);
             }
         }

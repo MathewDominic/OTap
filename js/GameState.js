@@ -10,67 +10,74 @@ var GameState = (function (_super) {
     __extends(GameState, _super);
     function GameState() {
         _super.call(this);
-        this.numOfCircles = 2;
-        this.circles = [];
     }
     GameState.prototype.create = function () {
         this.initGame();
         this.game.time.events.loop(gameSettings.tColorUpdate, this.updateSprites, this);
+        this.game.time.events.loop(gameSettings.tNewCircle, this.newCircle, this);
     };
     GameState.prototype.initGame = function () {
         var radius = Math.floor(this.getMaxObjWidth() / 2);
         var c = -1;
-        this.circles.length = 0;
         //initialize mat
-        this.mat = [];
+        this.circles = [];
         for (var i = 0; i < gameSettings.numRows; ++i) {
-            this.mat[i] = [];
+            this.circles[i] = [];
             for (var j = 0; j < gameSettings.numCols; ++j) {
-                this.mat[i][j] = -1;
+                this.circles[i][j] = new Circle(this.game, i, j, radius, -1);
             }
         }
         //add 2 rows randomly
         for (var i = 0; i < 2; ++i) {
             for (var j = 0; j < gameSettings.numCols; ++j) {
-                var ctemp = new Circle(this.game, i, j, radius, (++c % colors.length));
-                ctemp.makeSprite();
-                this.circles.push(ctemp);
-                this.mat[i][j] = ctemp.colorIndex;
+                this.circles[i][j].colorIndex = (++c % colors.length);
+                this.circles[i][j].makeSprite();
             }
         }
     };
     GameState.prototype.update = function () {
         //see if all the circles have same color
-        var colorToCheck = this.circles[0].colorIndex;
-        var allSame = true;
+        var colorToCheck = this.circles[0][0].colorIndex;
+        var allSame = false;
         var speed;
         for (var i = 0; i < this.circles.length; ++i) {
-            //change game logic here
-            if (this.circles[i].colorIndex != colorToCheck) {
-                allSame = false;
-            }
         }
         if (allSame) {
             //level complete
             this.clearCircles();
-            this.numOfCircles++;
             allSame = false;
             this.initGame();
         }
     };
     GameState.prototype.updateSprites = function () {
-        for (var i = 0; i < this.circles.length; ++i) {
-            this.circles[i].update();
+        for (var i = 0; i < gameSettings.numRows; ++i) {
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                this.circles[i][j].update();
+            }
         }
+    };
+    GameState.prototype.newCircle = function () {
+        var row = gameSettings.numRows - 1;
+        var col = Math.floor(Math.random() * gameSettings.numCols);
+        var toCol = this.getToRow(col);
+    };
+    GameState.prototype.getToRow = function (col) {
+        var toRow = gameSettings.numRows - 1;
+        for (var i = 0; i < gameSettings.numRows; ++i) {
+        }
+        return toRow;
     };
     GameState.prototype.getMaxObjWidth = function () {
         //as the number of objects increases the size should be changed accordingly
         var maxWidth = gameSettings.getW() / gameSettings.numCols;
-        return maxWidth;
+        var maxHeight = gameSettings.getH() / gameSettings.numRows;
+        return maxWidth > maxHeight ? maxHeight : maxWidth;
     };
     GameState.prototype.clearCircles = function () {
-        for (var i = 0; i < this.circles.length; ++i) {
-            this.circles[i].remove();
+        for (var i = 0; i < gameSettings.numRows; ++i) {
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                this.circles[i][j].remove();
+            }
         }
         this.circles.length = 0;
     };

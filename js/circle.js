@@ -15,7 +15,9 @@ var Circle = (function () {
     }
     Circle.prototype.makeSprite = function () {
         this.bmd = this.game.add.bitmapData(this.radius * 2, this.radius * 2);
-        this.bmd.circle(this.radius, this.radius, this.radius - 2, colors[this.colorIndex]);
+        if (this.colorIndex != -1) {
+            this.bmd.circle(this.radius, this.radius, this.radius - 2, colors[this.colorIndex]);
+        }
         this.sprite = this.game.add.sprite(this.x, this.y, this.bmd);
         //this.sprite.alpha = 0;
         this.game.add.tween(this.sprite).to({ alpha: 1 }, 2000, "Linear", true);
@@ -23,12 +25,19 @@ var Circle = (function () {
         this.sprite.events.onInputDown.add(this.clicked, this);
     };
     Circle.prototype.clicked = function () {
+        if (this.colorIndex == -1) {
+            return;
+        }
         this.touched = true;
         this.upCount = 0;
         this.colorIndex = (this.colorIndex + 1) % colors.length;
         this.update();
     };
     Circle.prototype.update = function () {
+        if (this.colorIndex == -1) {
+            //no need to draw circle, return
+            return;
+        }
         if (this.touched) {
             this.upCount++;
             if (this.upCount > (gameSettings.tChange * 1000) / gameSettings.tColorUpdate) {
@@ -45,7 +54,7 @@ var Circle = (function () {
                 this.bmd.context.arc(this.radius, this.radius, this.radius - 2, 0, this.toRadians(sectorAngle));
                 this.bmd.context.lineTo(this.radius, this.radius);
                 this.bmd.context.fill();
-                this.bmd.circle(this.radius, this.radius, this.radius - 2 - this.radius / 10, colors[this.colorIndex]);
+                this.bmd.circle(this.radius, this.radius, this.radius - 2 - this.radius / 6, colors[this.colorIndex]);
                 this.sprite.loadTexture(this.bmd);
             }
         }

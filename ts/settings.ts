@@ -5,10 +5,11 @@ class GameSettings {
     public  maxObjs : number = 50;
     public  tChange : number = 5;
     public  tColorUpdate : number = 200;
+    public  tNewCircle : number = 1000;
     public  gWidht : number = 400;
     public  hHeight : number = 600;
     public  numRows : number = 10;
-    public  numCols : number = 5;
+    public  numCols : number = 10;
     
     newWidth : number;
     newHeight : number;
