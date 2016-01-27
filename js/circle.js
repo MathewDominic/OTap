@@ -53,7 +53,9 @@ var Circle = (function () {
         if (this.touched) {
             this.upCount++;
             if (this.upCount > (gameSettings.tChange * 1000) / gameSettings.tColorUpdate) {
-                this.clicked();
+                //this.clicked();
+                this.upCount = 0;
+                this.colorIndex = (this.colorIndex + 1) % colors.length;
             }
             else {
                 var sectorAngle = ((this.upCount * gameSettings.tColorUpdate) / gameSettings.tChange) * 0.360;

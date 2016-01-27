@@ -6,8 +6,8 @@ class GameState extends Phaser.State {
 
     game: Phaser.Game;
     circles: Circle[][];
-    radius : number;
-    
+    radius: number;
+
     constructor() {
         super();
     }
@@ -23,45 +23,42 @@ class GameState extends Phaser.State {
         var c = -1;
         //initialize mat
         this.circles = [];
-        for(var i =0; i < gameSettings.numRows; ++i){
+        for (var i = 0; i < gameSettings.numRows; ++i) {
             this.circles[i] = [];
-            for(var j =0; j< gameSettings.numCols; ++j){
+            for (var j = 0; j < gameSettings.numCols; ++j) {
                 this.circles[i][j] = null;
             }
         }
     }
 
     update() {
-       //game logic
-       //for all the possible winning combinations, pass the [i,j] of circle removed to removeCircle
-       //ie., removeCircle(i,j);
+        //game logic
+        //for all the possible winning combinations, pass the [i,j] of circle removed to removeCircle
+        //ie., removeCircle(i,j);
        
-       for(var i =0; i < gameSettings.numRows; ++i)
-       {
+        for (var i = 0; i < gameSettings.numRows; ++i) {
 
-            for(var j =0; j< gameSettings.numCols; ++j)
-            {
-                if(this.circles[i][j]!=null && this.circles[i][j+1]!=null)
-                if(this.circles[i][j].colorIndex==this.circles[i][j+1].colorIndex)
-                {
-                    this.removeCircle(i,j);
-                    this.removeCircle(i,j+1);
-                }
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                if (this.circles[i][j] != null && this.circles[i][j + 1] != null)
+                    if (this.circles[i][j].colorIndex == this.circles[i][j + 1].colorIndex) {
+                        this.removeCircle(i, j);
+                        this.removeCircle(i, j + 1);
+                    }
             }
-       }
+        }
             
        
-       //after removing all
-       this.checkAndMoveCircles();
+        //after removing all
+        this.checkAndMoveCircles();
     }
-    
-    removeCircle(i : number, j : number){
+
+    removeCircle(i: number, j: number) {
         //remove the circle
         this.circles[i][j].remove();
         this.circles[i][j] = null;
         //update circles abouve accordingly :  will be done every frame by checkAndMoveCircles
     }
-    
+
     checkAndMoveCircles() {
         //from 2nd row check if the circle can be moved down
         for (var i = 1; i < gameSettings.numRows; ++i) {
@@ -79,36 +76,36 @@ class GameState extends Phaser.State {
 
     updateSprites() {
         for (var i = 0; i < gameSettings.numRows; ++i) {
-            for(var j =0; j < gameSettings.numCols; ++j){
-                if(this.circles[i][j] != null){
-                    this.circles[i][j].update();   
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                if (this.circles[i][j] != null) {
+                    this.circles[i][j].update();
                 }
             }
         }
     }
-    
+
     newCircle() {
         var color = Math.floor(Math.random() * colors.length);
-        var row = gameSettings.numRows-1;
+        var row = gameSettings.numRows - 1;
         var col = Math.floor(Math.random() * gameSettings.numCols);
         var toRow = this.getToRow(col);
-        if(toRow == gameSettings.numRows){
+        if (toRow == gameSettings.numRows) {
             //game over code
             return;
         }
-        var newCirc = new Circle(this.game, toRow, col, this.radius,color);
+        var newCirc = new Circle(this.game, toRow, col, this.radius, color);
         newCirc.makeSprite();
         this.circles[toRow][col] = newCirc;
     }
-    
-    getToRow(col : number){
+
+    getToRow(col: number) {
         var toRow = gameSettings.numRows;
-        for(var i = 0; i < gameSettings.numRows; ++i){
-          if(this.circles[i][col] == null){
-              //we got an empty cell
-              toRow = i;
-              break;
-          }
+        for (var i = 0; i < gameSettings.numRows; ++i) {
+            if (this.circles[i][col] == null) {
+                //we got an empty cell
+                toRow = i;
+                break;
+            }
         }
         return toRow;
     }
@@ -122,11 +119,11 @@ class GameState extends Phaser.State {
 
     clearCircles() {
         for (var i = 0; i < gameSettings.numRows; ++i) {
-            for( var j = 0; j < gameSettings.numCols; ++j){
-                if(this.circles[i][j] != null ){
-                  this.circles[i][j].remove();   
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                if (this.circles[i][j] != null) {
+                    this.circles[i][j].remove();
                 }
-            }            
+            }
         }
         this.circles.length = 0;
     }
