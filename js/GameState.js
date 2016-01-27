@@ -32,6 +32,15 @@ var GameState = (function (_super) {
         //game logic
         //for all the possible winning combinations, pass the [i,j] of circle removed to removeCircle
         //ie., removeCircle(i,j);
+        for (var i = 0; i < gameSettings.numRows; ++i) {
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                if (this.circles[i][j] != null && this.circles[i][j + 1] != null)
+                    if (this.circles[i][j].colorIndex == this.circles[i][j + 1].colorIndex) {
+                        this.removeCircle(i, j);
+                        this.removeCircle(i, j + 1);
+                    }
+            }
+        }
         //after removing all
         this.checkAndMoveCircles();
     };
