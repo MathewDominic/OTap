@@ -15,6 +15,7 @@ var GameSettings = (function () {
         this.hHeight = 600;
         this.numRows = 10;
         this.numCols = 10;
+        this.tFullFall = 2000;
         var targetWidth = 480; // the width of the game we want
         var targetHeight = 720;
         var deviceRatio = (window.innerWidth / window.innerHeight);
