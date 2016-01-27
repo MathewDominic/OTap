@@ -47,6 +47,12 @@ class GameState extends Phaser.State {
                     this.removeCircle(i,j);
                     this.removeCircle(i,j+1);
                 }
+                if(this.circles[i][j]!=null && this.circles[i+1][j]!=null)
+                if(this.circles[i][j].colorIndex==this.circles[i+1][j].colorIndex)
+                {
+                    this.removeCircle(i,j);
+                    this.removeCircle(i+1,j);
+                }
             }
        }
             
