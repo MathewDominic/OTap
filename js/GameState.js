@@ -33,6 +33,13 @@ var GameState = (function (_super) {
     };
     GameState.prototype.update = function () {
         //game logic
+        //for all the possible winning combinations, pass the [i,j] of circle removed to removeCircle
+        //ie., removeCircle(i,j);
+    };
+    GameState.prototype.removeCircle = function (i, j) {
+        //remove the circle
+        //update mat
+        //update circles abouve accordingly
     };
     GameState.prototype.updateSprites = function () {
         for (var i = 0; i < gameSettings.numRows; ++i) {

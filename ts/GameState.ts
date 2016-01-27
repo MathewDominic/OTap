@@ -37,6 +37,14 @@ class GameState extends Phaser.State {
 
     update() {
        //game logic
+       //for all the possible winning combinations, pass the [i,j] of circle removed to removeCircle
+       //ie., removeCircle(i,j);
+    }
+    
+    removeCircle(i : number, j : number){
+        //remove the circle
+        //update mat
+        //update circles abouve accordingly
     }
 
     updateSprites() {
