@@ -10,6 +10,7 @@ class GameSettings {
     public  hHeight : number = 600;
     public  numRows : number = 10;
     public  numCols : number = 10;
+    public  tFullFall : number = 2000;
     
     newWidth : number;
     newHeight : number;

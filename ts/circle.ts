@@ -40,19 +40,23 @@ class Circle {
         this.sprite = this.game.add.sprite(this.x, 0 , this.bmd);
         this.sprite.inputEnabled = true;
         this.sprite.events.onInputDown.add(this.clicked, this);
-        this.moveSprite(this.y);
+        
+        var time = (this.y/ gameSettings.getH())* gameSettings.tFullFall;
+        this.moveSprite(this.y, time);
         //this.sprite.alpha = 0;
         //this.game.add.tween(this.sprite).to({alpha:1}, 2000,"Linear",true);
     }
     
-    moveSprite(toY : number){
-        this.game.add.tween(this.sprite).to({y:toY},2000, "Linear",true);
+    moveSprite(toY : number, time : number){
+        this.game.add.tween(this.sprite).to({y:toY},time, "Linear",true);
     }
     
     changeRow(row : number){
         this.i = row;
-        this.y = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
-        this.moveSprite(this.y);
+        var newY = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
+        var time = ((newY - this.y)/ gameSettings.getH())* gameSettings.tFullFall;
+        this.y = newY;
+        this.moveSprite(this.y,time);
     }
     
     
