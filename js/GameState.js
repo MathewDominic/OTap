@@ -36,8 +36,9 @@ var GameState = (function (_super) {
             for (var j = 0; j < gameSettings.numCols; ++j) {
                 if (this.circles[i][j] != null && this.circles[i][j + 1] != null)
                     if (this.circles[i][j].colorIndex == this.circles[i][j + 1].colorIndex) {
-                        this.removeCircle(i, j);
-                        this.removeCircle(i, j + 1);
+                    }
+                if (this.circles[i][j] != null && this.circles[i + 1][j] != null)
+                    if (this.circles[i][j].colorIndex == this.circles[i + 1][j].colorIndex) {
                     }
             }
         }
