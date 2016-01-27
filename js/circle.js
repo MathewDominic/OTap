@@ -10,7 +10,7 @@ var Circle = (function () {
         this.shape = Shape.Circle;
         this.touched = false;
         this.upCount = 0;
-        this.x = this.j * 2 * radius;
+        this.x = this.j * 2 * this.radius;
         this.y = gameSettings.getH() - (this.i * 2 * radius) - 2 * this.radius;
     }
     Circle.prototype.makeSprite = function () {
@@ -18,11 +18,15 @@ var Circle = (function () {
         if (this.colorIndex != -1) {
             this.bmd.circle(this.radius, this.radius, this.radius - 2, colors[this.colorIndex]);
         }
-        this.sprite = this.game.add.sprite(this.x, this.y, this.bmd);
-        //this.sprite.alpha = 0;
-        this.game.add.tween(this.sprite).to({ alpha: 1 }, 2000, "Linear", true);
+        this.sprite = this.game.add.sprite(this.x, 0, this.bmd);
         this.sprite.inputEnabled = true;
         this.sprite.events.onInputDown.add(this.clicked, this);
+        this.moveSprite(this.y);
+        //this.sprite.alpha = 0;
+        //this.game.add.tween(this.sprite).to({alpha:1}, 2000,"Linear",true);
+    };
+    Circle.prototype.moveSprite = function (toY) {
+        this.game.add.tween(this.sprite).to({ y: toY }, 2000, "Linear", true);
     };
     Circle.prototype.clicked = function () {
         if (this.colorIndex == -1) {

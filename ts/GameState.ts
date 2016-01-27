@@ -6,6 +6,8 @@ class GameState extends Phaser.State {
 
     game: Phaser.Game;
     circles: Circle[][];
+    mat : number[][];
+    radius : number;
     
     constructor() {
         super();
@@ -18,64 +20,58 @@ class GameState extends Phaser.State {
     }
 
     initGame() {
-        var radius = Math.floor(this.getMaxObjWidth() / 2);
+        this.radius = Math.floor(this.getMaxObjWidth() / 2);
         var c = -1;
         //initialize mat
         this.circles = [];
+        this.mat = [];
         for(var i =0; i < gameSettings.numRows; ++i){
             this.circles[i] = [];
+            this.mat[i] = [];
             for(var j =0; j< gameSettings.numCols; ++j){
-                this.circles[i][j] = new Circle(this.game, i,j,radius,-1);
-            }
-        }
-        
-        //add 2 rows randomly
-        for (var i = 0; i < 2 ; ++i) {
-            for(var j = 0; j < gameSettings.numCols; ++j){
-                this.circles[i][j].colorIndex = (++c % colors.length);
-                this.circles[i][j].makeSprite();
+                this.circles[i][j] = null;
+                this.mat[i][j] = -1;
             }
         }
     }
 
     update() {
-        //see if all the circles have same color
-        var colorToCheck = this.circles[0][0].colorIndex;
-        var allSame = false;
-        var speed;
-        for (var i = 0; i < this.circles.length; ++i) {
-            //change game logic here
-            //if (this.circles[i].colorIndex != colorToCheck) {
-              //  allSame = false;
-           // }
-        }
-
-        if (allSame) {
-            //level complete
-            this.clearCircles();
-            allSame = false;
-            this.initGame();
-        }
+       //game logic
     }
 
     updateSprites() {
         for (var i = 0; i < gameSettings.numRows; ++i) {
             for(var j =0; j < gameSettings.numCols; ++j){
-                this.circles[i][j].update();
+                if(this.circles[i][j] != null){
+                    this.circles[i][j].update();   
+                }
             }
         }
     }
     
     newCircle() {
+        var color = Math.floor(Math.random() * colors.length);
         var row = gameSettings.numRows-1;
         var col = Math.floor(Math.random() * gameSettings.numCols);
-        var toCol = this.getToRow(col);
+        var toRow = this.getToRow(col);
+        if(toRow == gameSettings.numRows){
+            //game over code
+            return;
+        }
+        var newCirc = new Circle(this.game, toRow, col, this.radius,color);
+        newCirc.makeSprite();
+        this.circles[toRow][col] = newCirc;
+        this.mat[toRow][col] = color;
     }
     
     getToRow(col : number){
-        var toRow = gameSettings.numRows - 1;
+        var toRow = gameSettings.numRows;
         for(var i = 0; i < gameSettings.numRows; ++i){
-          
+          if(this.mat[i][col] == -1){
+              //we got an empty cell
+              toRow = i;
+              break;
+          }
         }
         return toRow;
     }
@@ -90,7 +86,9 @@ class GameState extends Phaser.State {
     clearCircles() {
         for (var i = 0; i < gameSettings.numRows; ++i) {
             for( var j = 0; j < gameSettings.numCols; ++j){
-                this.circles[i][j].remove();
+                if(this.circles[i][j] != null ){
+                  this.circles[i][j].remove();   
+                }
             }            
         }
         this.circles.length = 0;

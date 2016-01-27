@@ -17,53 +17,54 @@ var GameState = (function (_super) {
         this.game.time.events.loop(gameSettings.tNewCircle, this.newCircle, this);
     };
     GameState.prototype.initGame = function () {
-        var radius = Math.floor(this.getMaxObjWidth() / 2);
+        this.radius = Math.floor(this.getMaxObjWidth() / 2);
         var c = -1;
         //initialize mat
         this.circles = [];
+        this.mat = [];
         for (var i = 0; i < gameSettings.numRows; ++i) {
             this.circles[i] = [];
+            this.mat[i] = [];
             for (var j = 0; j < gameSettings.numCols; ++j) {
-                this.circles[i][j] = new Circle(this.game, i, j, radius, -1);
-            }
-        }
-        //add 2 rows randomly
-        for (var i = 0; i < 2; ++i) {
-            for (var j = 0; j < gameSettings.numCols; ++j) {
-                this.circles[i][j].colorIndex = (++c % colors.length);
-                this.circles[i][j].makeSprite();
+                this.circles[i][j] = null;
+                this.mat[i][j] = -1;
             }
         }
     };
     GameState.prototype.update = function () {
-        //see if all the circles have same color
-        var colorToCheck = this.circles[0][0].colorIndex;
-        var allSame = false;
-        var speed;
-        for (var i = 0; i < this.circles.length; ++i) {
-        }
-        if (allSame) {
-            //level complete
-            this.clearCircles();
-            allSame = false;
-            this.initGame();
-        }
+        //game logic
     };
     GameState.prototype.updateSprites = function () {
         for (var i = 0; i < gameSettings.numRows; ++i) {
             for (var j = 0; j < gameSettings.numCols; ++j) {
-                this.circles[i][j].update();
+                if (this.circles[i][j] != null) {
+                    this.circles[i][j].update();
+                }
             }
         }
     };
     GameState.prototype.newCircle = function () {
+        var color = Math.floor(Math.random() * colors.length);
         var row = gameSettings.numRows - 1;
         var col = Math.floor(Math.random() * gameSettings.numCols);
-        var toCol = this.getToRow(col);
+        var toRow = this.getToRow(col);
+        if (toRow == gameSettings.numRows) {
+            //game over code
+            return;
+        }
+        var newCirc = new Circle(this.game, toRow, col, this.radius, color);
+        newCirc.makeSprite();
+        this.circles[toRow][col] = newCirc;
+        this.mat[toRow][col] = color;
     };
     GameState.prototype.getToRow = function (col) {
-        var toRow = gameSettings.numRows - 1;
+        var toRow = gameSettings.numRows;
         for (var i = 0; i < gameSettings.numRows; ++i) {
+            if (this.mat[i][col] == -1) {
+                //we got an empty cell
+                toRow = i;
+                break;
+            }
         }
         return toRow;
     };
@@ -76,7 +77,9 @@ var GameState = (function (_super) {
     GameState.prototype.clearCircles = function () {
         for (var i = 0; i < gameSettings.numRows; ++i) {
             for (var j = 0; j < gameSettings.numCols; ++j) {
-                this.circles[i][j].remove();
+                if (this.circles[i][j] != null) {
+                    this.circles[i][j].remove();
+                }
             }
         }
         this.circles.length = 0;
