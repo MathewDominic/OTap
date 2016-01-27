@@ -6,7 +6,6 @@ class GameState extends Phaser.State {
 
     game: Phaser.Game;
     circles: Circle[][];
-    mat : number[][];
     radius : number;
     
     constructor() {
@@ -24,13 +23,10 @@ class GameState extends Phaser.State {
         var c = -1;
         //initialize mat
         this.circles = [];
-        this.mat = [];
         for(var i =0; i < gameSettings.numRows; ++i){
             this.circles[i] = [];
-            this.mat[i] = [];
             for(var j =0; j< gameSettings.numCols; ++j){
                 this.circles[i][j] = null;
-                this.mat[i][j] = -1;
             }
         }
     }
@@ -39,12 +35,31 @@ class GameState extends Phaser.State {
        //game logic
        //for all the possible winning combinations, pass the [i,j] of circle removed to removeCircle
        //ie., removeCircle(i,j);
+       
+       //after removing all
+       this.checkAndMoveCircles();
     }
     
     removeCircle(i : number, j : number){
         //remove the circle
-        //update mat
-        //update circles abouve accordingly
+        this.circles[i][j].remove();
+        this.circles[i][j] = null;
+        //update circles abouve accordingly :  will be done every frame by checkAndMoveCircles
+    }
+    
+    checkAndMoveCircles() {
+        //from 2nd row check if the circle can be moved down
+        for (var i = 1; i < gameSettings.numRows; ++i) {
+            for (var j = 0; j < gameSettings.numCols; ++j) {
+                if (this.circles[i][j] != null) {
+                    if (this.circles[i - 1][j] == null) {
+                        this.circles[i][j].changeRow(i - 1);
+                        this.circles[i - 1][j] = this.circles[i][j];
+                        this.circles[i][j] = null;
+                    }
+                }
+            }
+        }
     }
 
     updateSprites() {
@@ -69,13 +84,12 @@ class GameState extends Phaser.State {
         var newCirc = new Circle(this.game, toRow, col, this.radius,color);
         newCirc.makeSprite();
         this.circles[toRow][col] = newCirc;
-        this.mat[toRow][col] = color;
     }
     
     getToRow(col : number){
         var toRow = gameSettings.numRows;
         for(var i = 0; i < gameSettings.numRows; ++i){
-          if(this.mat[i][col] == -1){
+          if(this.circles[i][col] == null){
               //we got an empty cell
               toRow = i;
               break;

@@ -11,7 +11,7 @@ var Circle = (function () {
         this.touched = false;
         this.upCount = 0;
         this.x = this.j * 2 * this.radius;
-        this.y = gameSettings.getH() - (this.i * 2 * radius) - 2 * this.radius;
+        this.y = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
     }
     Circle.prototype.makeSprite = function () {
         this.bmd = this.game.add.bitmapData(this.radius * 2, this.radius * 2);
@@ -27,6 +27,11 @@ var Circle = (function () {
     };
     Circle.prototype.moveSprite = function (toY) {
         this.game.add.tween(this.sprite).to({ y: toY }, 2000, "Linear", true);
+    };
+    Circle.prototype.changeRow = function (row) {
+        this.i = row;
+        this.y = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
+        this.moveSprite(this.y);
     };
     Circle.prototype.clicked = function () {
         if (this.colorIndex == -1) {

@@ -28,7 +28,7 @@ class Circle {
         this.upCount = 0;
         
         this.x = this.j * 2 * this.radius;
-        this.y = gameSettings.getH() - (this.i * 2 * radius) - 2 * this.radius;
+        this.y = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
     }
     
     makeSprite  () {
@@ -47,6 +47,12 @@ class Circle {
     
     moveSprite(toY : number){
         this.game.add.tween(this.sprite).to({y:toY},2000, "Linear",true);
+    }
+    
+    changeRow(row : number){
+        this.i = row;
+        this.y = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
+        this.moveSprite(this.y);
     }
     
     
