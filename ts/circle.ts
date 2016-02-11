@@ -70,17 +70,21 @@ class Circle {
         this.update();
     }
     
-    update () {
+    update () 
+    {
         if(this.colorIndex == -1){
             //no need to draw circle, return
             return;
         }
-        if(this.touched){
+        if(this.touched)
+        {
             this.upCount++;
-            if(this.upCount > (gameSettings.tChange * 1000)/gameSettings.tColorUpdate){
+            if(this.upCount > (gameSettings.tChange * 1000)/gameSettings.tColorUpdate)
+            {
                 this.clicked();
             }
-            else{
+            else
+            {
                 var sectorAngle = ((this.upCount*gameSettings.tColorUpdate)/gameSettings.tChange)*0.360;
                 this.bmd.clear();
                 this.bmd.circle(this.radius, this.radius, this.radius-2, colors[this.colorIndex]);
@@ -94,6 +98,21 @@ class Circle {
                 this.bmd.circle(this.radius, this.radius, this.radius -2 - this.radius/6, colors[this.colorIndex]);
                 this.sprite.loadTexture(this.bmd);
             }
+        }
+        else
+        {
+                var sectorAngle = ((this.upCount*gameSettings.tColorUpdate)/gameSettings.tChange)*0.360;
+                this.bmd.clear();
+                this.bmd.circle(this.radius, this.radius, this.radius-2, colors[this.colorIndex]);
+                this.bmd.context.beginPath();
+                this.bmd.context.strokeStyle = '#000000';
+                this.bmd.context.fillStyle = colors[(this.colorIndex+1)%colors.length];
+                this.bmd.context.moveTo(this.radius,this.radius);
+                this.bmd.context.arc(this.radius,this.radius,this.radius-2,0,this.toRadians(sectorAngle));
+                this.bmd.context.lineTo(this.radius,this.radius);
+                this.bmd.context.fill();
+                this.bmd.circle(this.radius, this.radius, this.radius -2 - this.radius/6, colors[this.colorIndex]);
+                this.sprite.loadTexture(this.bmd);
         }
     }
     

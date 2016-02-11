@@ -34,36 +34,18 @@ var GameState = (function (_super) {
         //ie., removeCircle(i,j);
         for (var i = 0; i < gameSettings.numRows; ++i) {
             for (var j = 0; j < gameSettings.numCols; ++j) {
-                if (this.circles[i][j])
-                    console.log(i + " " + j + " " + this.circles[i][j].colorIndex);
-            }
-        }
-        console.log("t");
-        for (var i = 0; i < gameSettings.numRows; ++i) {
-            for (var j = 0; j < gameSettings.numCols; ++j) {
-                if (this.circles[i][j] != null && this.circles[i][j + 1] != null && this.circles[i][j + 2] != null) {
+                if (this.circles[i][j] != null && this.circles[i][j + 1] != null && this.circles[i][j + 2] != null)
                     if (this.circles[i][j].colorIndex == this.circles[i][j + 1].colorIndex && this.circles[i][j + 2].colorIndex == this.circles[i][j + 1].colorIndex) {
-                        if (this.circles[i][j + 3]) {
-                            if (this.circles[i][j + 3].colorIndex = this.circles[i][j].colorIndex)
-                                for (var k = 0; k < gameSettings.numCols; k++) {
-                                    if (this.circles[i][k])
-                                        this.removeCircle(i, k);
-                                }
-                        }
-                        else {
-                            this.removeCircle(i, j);
-                            this.removeCircle(i, j + 1);
-                            this.removeCircle(i, j + 2);
-                        }
+                        this.removeCircle(i, j);
+                        this.removeCircle(i, j + 1);
+                        this.removeCircle(i, j + 2);
                     }
-                }
-                if (this.circles[i][j] != null && this.circles[i + 1][j] != null && this.circles[i + 2][j] != null) {
+                if (this.circles[i][j] != null && this.circles[i + 1][j] != null && this.circles[i + 2][j] != null)
                     if (this.circles[i][j].colorIndex == this.circles[i + 1][j].colorIndex && this.circles[i + 2][j].colorIndex == this.circles[i + 1][j].colorIndex) {
                         this.removeCircle(i, j);
                         this.removeCircle(i + 1, j);
                         this.removeCircle(i + 2, j);
                     }
-                }
             }
         }
         //after removing all
@@ -71,7 +53,6 @@ var GameState = (function (_super) {
     };
     GameState.prototype.removeCircle = function (i, j) {
         //remove the circle
-        console.log("test" + i + " " + j);
         this.circles[i][j].remove();
         this.circles[i][j] = null;
         //update circles abouve accordingly :  will be done every frame by checkAndMoveCircles
