@@ -2,66 +2,66 @@
 /// <reference path="settings.ts" />
 
 class Circle {
-    game : Phaser.Game
-    x : number;
-    y : number;
-    i : number;
-    j : number;
-    radius : number;
-    colorIndex : number;
-    shape : Shape;
-    sprite : Phaser.Sprite;
-    touched : boolean;
-    upCount : number;
-    bmd : Phaser.BitmapData
-    
-    
-    constructor (game :Phaser.Game, i : number, j : number, radius : number, colorIndex : number) {
+    game: Phaser.Game
+    x: number;
+    y: number;
+    i: number;
+    j: number;
+    radius: number;
+    colorIndex: number;
+    shape: Shape;
+    sprite: Phaser.Sprite;
+    touched: boolean;
+    upCount: number;
+    bmd: Phaser.BitmapData
+
+
+    constructor(game: Phaser.Game, i: number, j: number, radius: number, colorIndex: number) {
         this.game = game;
         this.i = i;
         this.j = j;
         this.radius = radius;
         this.colorIndex = colorIndex;
-        
+
         this.shape = Shape.Circle;
         this.touched = false;
         this.upCount = 0;
-        
+
         this.x = this.j * 2 * this.radius;
         this.y = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
     }
-    
-    makeSprite  () {
-        this.bmd = this.game.add.bitmapData(this.radius*2, this.radius*2);
-        if(this.colorIndex != -1){
-            this.bmd.circle(this.radius, this.radius, this.radius-2, colors[this.colorIndex]);
+
+    makeSprite() {
+        this.bmd = this.game.add.bitmapData(this.radius * 2, this.radius * 2);
+        if (this.colorIndex != -1) {
+            this.bmd.circle(this.radius, this.radius, this.radius - 2, colors[this.colorIndex]);
         }
-        
-        this.sprite = this.game.add.sprite(this.x, 0 , this.bmd);
+
+        this.sprite = this.game.add.sprite(this.x, 0, this.bmd);
         this.sprite.inputEnabled = true;
         this.sprite.events.onInputDown.add(this.clicked, this);
-        
-        var time = (this.y/ gameSettings.getH())* gameSettings.tFullFall;
+
+        var time = (this.y / gameSettings.getH()) * gameSettings.tFullFall;
         this.moveSprite(this.y, time);
         //this.sprite.alpha = 0;
         //this.game.add.tween(this.sprite).to({alpha:1}, 2000,"Linear",true);
     }
-    
-    moveSprite(toY : number, time : number){
-        this.game.add.tween(this.sprite).to({y:toY},time, "Linear",true);
+
+    moveSprite(toY: number, time: number) {
+        this.game.add.tween(this.sprite).to({ y: toY }, time, "Linear", true);
     }
-    
-    changeRow(row : number){
+
+    changeRow(row: number) {
         this.i = row;
         var newY = gameSettings.getH() - (this.i * 2 * this.radius) - 2 * this.radius;
-        var time = ((newY - this.y)/ gameSettings.getH())* gameSettings.tFullFall;
+        var time = ((newY - this.y) / gameSettings.getH()) * gameSettings.tFullFall;
         this.y = newY;
-        this.moveSprite(this.y,time);
+        this.moveSprite(this.y, time);
     }
-    
-    
-    clicked () {
-        if(this.colorIndex == -1){
+
+
+    clicked() {
+        if (this.colorIndex == -1) {
             return;
         }
         this.touched = true;
@@ -69,7 +69,7 @@ class Circle {
         this.colorIndex = (this.colorIndex + 1) % colors.length;
         this.update();
     }
-    
+
     update () 
     {
         if(this.colorIndex == -1){
@@ -87,15 +87,15 @@ class Circle {
             {
                 var sectorAngle = ((this.upCount*gameSettings.tColorUpdate)/gameSettings.tChange)*0.360;
                 this.bmd.clear();
-                this.bmd.circle(this.radius, this.radius, this.radius-2, colors[this.colorIndex]);
+                this.bmd.circle(this.radius, this.radius, this.radius - 2, colors[this.colorIndex]);
                 this.bmd.context.beginPath();
                 this.bmd.context.strokeStyle = '#000000';
-                this.bmd.context.fillStyle = colors[(this.colorIndex+1)%colors.length];
-                this.bmd.context.moveTo(this.radius,this.radius);
-                this.bmd.context.arc(this.radius,this.radius,this.radius-2,0,this.toRadians(sectorAngle));
-                this.bmd.context.lineTo(this.radius,this.radius);
+                this.bmd.context.fillStyle = colors[(this.colorIndex + 1) % colors.length];
+                this.bmd.context.moveTo(this.radius, this.radius);
+                this.bmd.context.arc(this.radius, this.radius, this.radius - 2, 0, this.toRadians(sectorAngle));
+                this.bmd.context.lineTo(this.radius, this.radius);
                 this.bmd.context.fill();
-                this.bmd.circle(this.radius, this.radius, this.radius -2 - this.radius/6, colors[this.colorIndex]);
+                this.bmd.circle(this.radius, this.radius, this.radius - 2 - this.radius / 6, colors[this.colorIndex]);
                 this.sprite.loadTexture(this.bmd);
             }
         }
@@ -115,12 +115,12 @@ class Circle {
                 this.sprite.loadTexture(this.bmd);
         }
     }
-    
-    remove () {
+
+    remove() {
         this.sprite.destroy();
     }
-    
-    toRadians  (deg : number) {
+
+    toRadians(deg: number) {
         return deg * Math.PI / 180;
     }
 }
